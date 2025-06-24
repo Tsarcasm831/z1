@@ -252,8 +252,8 @@ body {
 }
 
 .lt-logo {
-  width: 64px;
-  height: 64px;
+  width: 192px;
+  height: 192px;
   animation: logo-pulse 2s infinite;
 }
 
