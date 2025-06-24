@@ -11,8 +11,8 @@ function loadGLTF(loader, url) {
 export async function spawnFoxes(scene, count) {
   const loader = new GLTFLoader();
   const [foxGltf, walkGltf] = await Promise.all([
-    loadGLTF(loader, 'assets/models/fox.glb'),
-    loadGLTF(loader, 'assets/models/fox_walking_animation.glb')
+    loadGLTF(loader, 'assets/lt/undeadFox.glb'),
+    loadGLTF(loader, 'assets/lt/undeadFox_walking_animation.glb')
   ]);
 
   const foxes = [];

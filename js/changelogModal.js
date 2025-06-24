@@ -30,6 +30,7 @@ function setupChangelogModal() {
   button.addEventListener('click', openModal);
 }
 
+
 if (document.readyState !== 'loading') {
   setupChangelogModal();
 } else {
