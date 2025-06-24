@@ -1,42 +1,127 @@
-# Instructions for Agents
+Z1 Agent Workflow – Master Guide
 
-Welcome to the Z1 Agent Workflow. All contributors must adhere to the following guidelines to ensure project stability, transparency, and traceability.
+Mission StatementEmpower every contributor to ship resilient, traceable, future-proof code through a clear, no-nonsense playbook.
 
----
+☰ Table of Contents
 
-## ✅ Environment Requirements
+Global Environment Rules
 
-- Use **Node.js 18.x** or later when running any scripts or tools.
-- After switching environments or installing dependencies, run:
-  ```bash
-  node --version
-to confirm the correct version is active.
+Universal Changelog Policy
 
-📜 Changelog Policy (MANDATORY)
-🔥 Every change made to the project must be reflected in the changelog. No exceptions.
+Five Official Agent Archetypes• Core Agent• UI Agent• Data Agent• Quality Agent• Ops Agent
 
-A changelog entry must be created or updated for each action (new feature, fix, tweak, removal).
+Pull-Request Gate Checklist
 
-Use a timestamp format of: MMDDYY-HHMM for each entry.
+Getting Help
 
-Example: 062424-1530 (June 24, 2024 at 3:30 PM)
+Global Environment Rules
 
-Entries should be placed under the appropriate module and section:
+Requirement
 
-✨ Added
+Value
 
-🛠 Changed
+Runtime
 
-🐛 Fixed
+Node.js ≥ 18.x
 
-🔥 Removed
+Package Mgr
 
-If no changelog entry is submitted alongside your update, your contribution is considered incomplete.
+pnpm 8.x (preferred) or npm 10.x
 
-🧪 Testing Policy
-There are currently no automated tests for this project.
+Lint
 
-All testing must be performed manually — you break it, you fix it.
+ESLint + Prettier (auto-run via Git hooks)
 
-💬 Final Note
-Be meticulous. Be traceable. Keep Z1’s development log pristine for your fellow agents — and your future self.
+Git Hooks
+
+Husky + lint-staged
+
+After every environment change run:
+
+node --version
+
+If it prints anything other than v18.* – stop and fix your PATH.
+
+🔒 Dependency Discipline
+
+Never commit a package-lock.json and a pnpm-lock.yaml in the same PR.
+
+External binaries belong in /tools, checked-in only if the license allows redistribution.
+
+Universal Changelog Policy
+
+Mandatory for every commit touching production code. No entry → no merge.
+
+Timestamp format MMDDYY-HHMM (24-hour clock, local). Example: 062425-1422.
+
+One of four sections per module:
+
+✨ Added – new features / files
+
+🛠 Changed – modifications / refactors
+
+🐛 Fixed – bug squashes
+
+🔥 Removed – deletions / deprecations
+
+Keep the language short, active, past tense. Begin with the module path.packages/ui: Fixed button focus-ring bleed on Safari.
+
+See docs/CHANGELOG.md for formatting examples.
+
+Five Official Agent Archetypes
+
+Each PR must declare one (and only one) of the following roles in its description:
+
+Archetype
+
+One-liner
+
+Dedicated Spec
+
+Core Agent
+
+Owns domain & business logic
+
+agents_core.md
+
+UI Agent
+
+Crafts all user-facing surfaces
+
+agents_ui.md
+
+Data Agent
+
+Guards persistence & migrations
+
+agents_data.md
+
+Quality Agent
+
+Breaks the build before users do
+
+agents_quality.md
+
+Ops Agent
+
+Automates the road to prod
+
+agents_ops.md
+
+📌  Why roles? Because "full-stack" means everything and therefore nothing. Specialise, own, deliver.
+
+Pull-Request Gate Checklist
+
+Before requesting review, tick every box:
+
+
+
+Fail one – fail all. The merge button hides until your checklist is spotless.
+
+Getting Help
+
+Slack #z1-dev-support – fastest human eyes.
+
+Docs folder – if the answer isn’t there, add it once you learn.
+
+Escalate early, escalate often. Surprises belong in birthday parties, not release nights.
