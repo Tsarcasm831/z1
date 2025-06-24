@@ -169,9 +169,14 @@ export function createTrees(scene) {
       }
     });
 
-    // Calculate vertical offset so tree bases sit on the ground
-    const bbox = new THREE.Box3().setFromObject(treeModel);
-    const baseOffset = -bbox.min.y;
+    // Helper to properly place a tree on the terrain after scaling
+    function placeTreeOnGround(tree) {
+      // Ensure world matrix is up to date before calculating bounds
+      tree.updateMatrixWorld(true);
+      const box = new THREE.Box3().setFromObject(tree);
+      const groundY = getGroundHeight(tree.position.x, tree.position.z, scene);
+      tree.position.y = groundY - box.min.y;
+    }
     
     // Create trees at different positions - Increased number of trees and spread
     for (let i = 0; i < 400; i++) { // Increased from 100 to 400 trees
@@ -203,8 +208,8 @@ export function createTrees(scene) {
       const treeScale = 0.0144 + rng.random() * 0.009;
       tree.scale.set(treeScale, treeScale, treeScale);
 
-      // Position tree on the ground considering scale
-      tree.position.y = getGroundHeight(tree.position.x, tree.position.z, scene) + baseOffset * treeScale;
+      // Position tree precisely on the ground after scaling
+      placeTreeOnGround(tree);
       
       // Add custom property for collision detection
       tree.userData.isTree = true;
