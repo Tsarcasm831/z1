@@ -39,6 +39,8 @@
 ## fox.js
 ### ✨ Added
 - 062425-2017 Add roaming fox NPCs with walking animation.
+### 🐛 Fixed
+- 062425-2123 Fix incorrect GLB path for roaming fox model.
 
 ## worldGeneration.js
 ### 🔥 Removed

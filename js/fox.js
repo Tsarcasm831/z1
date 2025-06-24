@@ -10,10 +10,10 @@ function loadGLTF(loader, url) {
 
 export async function spawnFoxes(scene, count) {
   const loader = new GLTFLoader();
-  const [foxGltf, walkGltf] = await Promise.all([
-    loadGLTF(loader, 'assets/lt/undeadFox.glb'),
-    loadGLTF(loader, 'assets/lt/undeadFox_walking_animation.glb')
-  ]);
+  const foxGltf = await loadGLTF(
+    loader,
+    'assets/lt/models/undeadFox_walking_animation.glb'
+  );
 
   const foxes = [];
   for (let i = 0; i < count; i++) {
@@ -26,7 +26,7 @@ export async function spawnFoxes(scene, count) {
     });
 
     const mixer = new THREE.AnimationMixer(fox);
-    const action = mixer.clipAction(walkGltf.animations[0]);
+    const action = mixer.clipAction(foxGltf.animations[0]);
     action.play();
 
     const x = (Math.random() * 40) - 20;
@@ -44,3 +44,4 @@ export async function spawnFoxes(scene, count) {
 
   return foxes;
 }
+
