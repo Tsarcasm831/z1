@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { PlayerControls } from "./controls.js";
 import { createPlayerModel, changeAnimation } from "./player.js";
-import { createBarriers, createTrees } from "./worldGeneration.js";
+import { createBarriers, createTrees, createTerrain } from "./worldGeneration.js";
 import { createSkybox } from "./skybox.js";
 
 // Simple seeded random number generator
@@ -109,8 +109,9 @@ async function main() {
     // Add fog for depth and atmosphere
     scene.fog = new THREE.Fog(0x87CEEB, 50, 400);
     
-    // Create barriers, trees, clouds and platforms
+    // Create terrain and natural features
     createBarriers(scene);
+    createTerrain(scene);
     createTrees(scene);
     
     const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -157,29 +158,6 @@ async function main() {
     dirLight.shadow.camera.bottom = -25;
     scene.add(dirLight);
     
-    // Ground - Increased size from 150 to 600
-    const groundGeometry = new THREE.PlaneGeometry(600, 600);
-    
-    // Load ground texture
-    const textureLoader = new THREE.TextureLoader();
-    const groundTexture = textureLoader.load('/assets/textures/d75c1v3-b844c293-57db-4eac-8504-7c4c06a4e329.png');
-    
-    // Configure texture repeat to avoid stretching
-    groundTexture.wrapS = THREE.RepeatWrapping;
-    groundTexture.wrapT = THREE.RepeatWrapping;
-    groundTexture.repeat.set(20, 20); // Adjust repeat values to control texture density
-    
-    const groundMaterial = new THREE.MeshStandardMaterial({ 
-      map: groundTexture,
-      roughness: 0.8,
-      metalness: 0.2
-    });
-    
-    const ground = new THREE.Mesh(groundGeometry, groundMaterial);
-    ground.rotation.x = -Math.PI / 2; // Rotate to horizontal
-    ground.receiveShadow = true;
-    scene.add(ground);
-
     // Grid helper - Increased size to match ground
     const gridHelper = new THREE.GridHelper(600, 600);
     gridHelper.visible = false; // Grid off by default
