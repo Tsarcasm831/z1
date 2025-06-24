@@ -29,6 +29,8 @@
 ### ✨ Added
 - 062425-2013 Style rules for changelog modal overlay.
 - 062425-2038 ui/intro-screen: Animations for LT logo and layout tweaks.
+### 🛠 Changed
+- 062425-2043 ui/intro-screen: Enlarged LT logo to 3x size.
 
 ## fox.js
 ### ✨ Added
