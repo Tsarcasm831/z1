@@ -28,7 +28,7 @@ export function createPlayerModel(three, username) {
     const loader = new GLTFLoader();
     
     // Load idle animation first and setup model
-    loader.load('Animation_Idle_withSkin.glb', (gltf) => {
+    loader.load('assets/models/Animation_Idle_withSkin.glb', (gltf) => {
         const model = gltf.scene;
         model.traverse((child) => {
             if (child.isMesh) {
@@ -53,12 +53,12 @@ export function createPlayerModel(three, username) {
         playerGroup.userData.currentAnimation = 'idle';
 
         // Now load walking animation
-        loader.load('Animation_Walking_Woman_withSkin.glb', (gltf) => {
+        loader.load('assets/models/Animation_Walking_Woman_withSkin.glb', (gltf) => {
             playerGroup.userData.animations.walking = gltf.animations[0];
         });
 
         // And finally load running animation
-        loader.load('Animation_Running_withSkin.glb', (gltf) => {
+        loader.load('assets/models/Animation_Running_withSkin.glb', (gltf) => {
             playerGroup.userData.animations.running = gltf.animations[0];
         });
     });

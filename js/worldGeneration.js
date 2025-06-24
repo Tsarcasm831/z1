@@ -24,7 +24,7 @@ export function createTrees(scene) {
   
   // Load the pine tree model
   const loader = new GLTFLoader();
-  loader.load('pine_tree.glb', (gltf) => {
+  loader.load('assets/models/pine_tree.glb', (gltf) => {
     const treeModel = gltf.scene;
     
     // Make sure the model casts and receives shadows
