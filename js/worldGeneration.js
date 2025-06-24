@@ -135,17 +135,6 @@ export function createTerrain(scene) {
   return ground;
 }
 
-// Simple seeded random number generator
-class MathRandom {
-  constructor(seed) {
-    this.seed = seed;
-  }
-  
-  random() {
-    const x = Math.sin(this.seed++) * 10000;
-    return x - Math.floor(x);
-  }
-}
 
 export function createBarriers(scene) {
   // No barriers will be created

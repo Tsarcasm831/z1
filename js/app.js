@@ -2,20 +2,7 @@ import * as THREE from "three";
 import { PlayerControls } from "./controls.js";
 import { createPlayerModel, changeAnimation } from "./player.js";
 import { createBarriers, createTerrain, getGroundHeight } from "./worldGeneration.js";
-import { createSkybox } from "./skybox.js";
 import { spawnFoxes } from "./fox.js";
-
-// Simple seeded random number generator
-class MathRandom {
-  constructor(seed) {
-    this.seed = seed;
-  }
-  
-  random() {
-    const x = Math.sin(this.seed++) * 10000;
-    return x - Math.floor(x);
-  }
-}
 
 async function main() {
   // Handle intro screen and loading sequence
