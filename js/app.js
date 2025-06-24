@@ -55,17 +55,23 @@ async function main() {
     const messageDuration = 1500; // 1.5 seconds per message
     const totalDuration = 15000; // 15 seconds total
     const messageCount = loadingMessages.length;
+
+    // Use a real progress simulation for better user experience
+    let gameInitialized = false;
+    const initializePromise = initializeGame().then(() => {
+        gameInitialized = true;
+    });
     
     const updateProgress = setInterval(() => {
-      progress += (100 / (totalDuration / 100)); // Increment for smooth 15-second progress
+      // Slow down progress if game hasn't finished initializing
+      const increment = gameInitialized ? 100 : (100 / (totalDuration / 100));
+      progress += increment;
       progressBar.style.width = `${Math.min(progress, 100)}%`;
       
-      if (progress >= 100) {
+      if (progress >= 100 && gameInitialized) {
         clearInterval(updateProgress);
         loadingScreen.style.display = 'none';
         gameContainer.style.display = 'block';
-        // Start the game after loading
-        initializeGame();
       }
     }, 100);
     
@@ -118,7 +124,7 @@ async function main() {
     const playerLabels = {};
     
     // Create player model
-    const playerModel = createPlayerModel(THREE, playerName);
+    const playerModel = await createPlayerModel(THREE, playerName);
     scene.add(playerModel);
     
     // Initialize player controls
@@ -156,7 +162,7 @@ async function main() {
     
     // Load ground texture
     const textureLoader = new THREE.TextureLoader();
-    const groundTexture = textureLoader.load('assets/textures/d75c1v3-b844c293-57db-4eac-8504-7c4c06a4e329.png');
+    const groundTexture = textureLoader.load('/assets/textures/d75c1v3-b844c293-57db-4eac-8504-7c4c06a4e329.png');
     
     // Configure texture repeat to avoid stretching
     groundTexture.wrapS = THREE.RepeatWrapping;
@@ -280,16 +286,17 @@ async function main() {
           const peerInfo = room.peers[clientId] || {};
           const peerName = peerInfo.username || `Player${clientId.substring(0, 4)}`;
           
-          const playerModel = createPlayerModel(THREE, peerName);
-          playerModel.position.set(playerData.x, playerData.y || 0.5, playerData.z);
-          if (playerData.rotation !== undefined) {
-            playerModel.rotation.y = playerData.rotation;
-          }
-          scene.add(playerModel);
-          otherPlayers[clientId] = playerModel;
-          
-          // Create name label
-          playerLabels[clientId] = createPlayerLabel(clientId, peerName);
+          createPlayerModel(THREE, peerName).then(newPlayerModel => {
+            newPlayerModel.position.set(playerData.x, playerData.y || 0.5, playerData.z);
+            if (playerData.rotation !== undefined) {
+              newPlayerModel.rotation.y = playerData.rotation;
+            }
+            scene.add(newPlayerModel);
+            otherPlayers[clientId] = newPlayerModel;
+            
+            // Create name label
+            playerLabels[clientId] = createPlayerLabel(clientId, peerName);
+          });
         }
         
         // Update existing player

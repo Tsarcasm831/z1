@@ -191,12 +191,14 @@ export class PlayerControls {
     
     // Joystick move event with better movement handling
     this.joystick.on('move', (evt, data) => {
-      const force = Math.min(data.force, 1); // Normalize force between 0 and 1
+      const force = Math.min(data.force, 1.0); // Normalize force between 0 and 1
       const angle = data.angle.radian;
       
       // Calculate movement values using the joystick - fixed direction mapping
-      this.moveForward = -Math.sin(angle) * force * SPEED * 5; 
-      this.moveRight = Math.cos(angle) * force * SPEED * 5;    
+      this.moveForward = Math.sin(angle) * force; 
+      this.moveRight = Math.cos(angle) * force;
+      
+      this.moveForce = force;
     });
     
     // Joystick end event
@@ -252,23 +254,13 @@ export class PlayerControls {
     
     if (this.isMobile) {
       if (this.moveForward !== 0 || this.moveRight !== 0) {
-        const forward = new THREE.Vector3();
-        this.camera.getWorldDirection(forward);
-        forward.y = 0;
-        forward.normalize();
-        
-        const right = new THREE.Vector3(-forward.z, 0, forward.x);
-        
-        moveDirection.addScaledVector(forward, -this.moveForward); // Reversed direction
-        moveDirection.addScaledVector(right, this.moveRight);
-        moveDirection.normalize().multiplyScalar(SPEED * MOBILE_SPEED_MULTIPLIER); // Standardized speed
-        
-        // For mobile, use force as the speed indicator (for walking vs running)
-        const force = Math.sqrt(this.moveForward * this.moveForward + this.moveRight * this.moveRight);
-        this.isRunning = force > 0.7; // Consider it running if joystick pushed far enough
-        this.moveSpeed = force;
+        moveDirection.z = -this.moveForward;
+        moveDirection.x = this.moveRight;
+        this.moveSpeed = this.moveForce;
+        this.isRunning = this.moveForce > 0.7; 
       } else {
         this.moveSpeed = 0;
+        this.isRunning = false;
       }
     } else {
       if (this.keysPressed.has("w") || this.keysPressed.has("arrowup")) {
@@ -299,25 +291,19 @@ export class PlayerControls {
     rightVector.crossVectors(this.camera.up, cameraDirection).normalize();
     
     const movement = new THREE.Vector3();
-    if (!this.isMobile) {
-      if (moveDirection.z !== 0) {
+    const speedMultiplier = this.isRunning ? 2.5 : 1.2;
+
+    if (moveDirection.z !== 0) {
         movement.add(cameraDirection.clone().multiplyScalar(moveDirection.z));
-      }
-      if (moveDirection.x !== 0) {
+    }
+    if (moveDirection.x !== 0) {
         movement.add(rightVector.clone().multiplyScalar(moveDirection.x));
-      }
-      
-      if (movement.length() > 0) {
-        // Apply running speed multiplier when shift is pressed
-        const speedMultiplier = this.isRunning ? 2.5 : 1.2; // Increased speed multipliers
+    }
+
+    if (this.isMobile && movement.length() > 0) {
+        movement.normalize().multiplyScalar(SPEED * this.moveSpeed * speedMultiplier);
+    } else if (movement.length() > 0) {
         movement.normalize().multiplyScalar(SPEED * speedMultiplier);
-      }
-    } else {
-      movement.copy(moveDirection);
-      // Apply running speed multiplier for mobile as well
-      if (this.isRunning) {
-        movement.multiplyScalar(2.5); // Increased mobile running multiplier
-      }
     }
     
     this.velocity.y -= GRAVITY;

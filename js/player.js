@@ -1,7 +1,14 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-export function createPlayerModel(three, username) {
+// Promisify GLTFLoader
+function loadGLTF(loader, url) {
+    return new Promise((resolve, reject) => {
+        loader.load(url, resolve, undefined, reject);
+    });
+}
+
+export async function createPlayerModel(three, username) {
     const playerGroup = new THREE.Group();
     
     // Generate consistent color from username
@@ -21,47 +28,45 @@ export function createPlayerModel(three, username) {
         mixer: null,
         currentAnimation: null,
         color: color,
-        model: null
+        model: null,
+        username: username,
     };
     
-    // Load all the animations
     const loader = new GLTFLoader();
     
-    // Load idle animation first and setup model
-    loader.load('assets/models/Animation_Idle_withSkin.glb', (gltf) => {
-        const model = gltf.scene;
-        model.traverse((child) => {
-            if (child.isMesh) {
-                child.castShadow = true;
-                // Apply user color to body parts
-                if (child.material && (child.name.includes('Body') || child.name.includes('body'))) {
-                    child.material = child.material.clone();
-                    child.material.color.set(color);
-                }
+    // Load all models in parallel
+    const [idleGltf, walkingGltf, runningGltf] = await Promise.all([
+        loadGLTF(loader, 'assets/models/Animation_Idle_withSkin.glb'),
+        loadGLTF(loader, 'assets/models/Animation_Walking_withSkin.glb'),
+        loadGLTF(loader, 'assets/models/Animation_Running_withSkin.glb')
+    ]);
+
+    const model = idleGltf.scene;
+    model.traverse((child) => {
+        if (child.isMesh) {
+            child.castShadow = true;
+            // Apply user color to body parts
+            if (child.material && (child.name.includes('Body') || child.name.includes('body'))) {
+                child.material = child.material.clone();
+                child.material.color.set(color);
             }
-        });
-        
-        playerGroup.userData.model = model;
-        playerGroup.userData.mixer = new THREE.AnimationMixer(model);
-        playerGroup.userData.animations.idle = gltf.animations[0];
-        playerGroup.add(model);
-        
-        // Start with idle animation
-        const idleAction = playerGroup.userData.mixer.clipAction(playerGroup.userData.animations.idle);
-        idleAction.timeScale = 1.0;
-        idleAction.play();
-        playerGroup.userData.currentAnimation = 'idle';
-
-        // Now load walking animation
-        loader.load('assets/models/Animation_Walking_Woman_withSkin.glb', (gltf) => {
-            playerGroup.userData.animations.walking = gltf.animations[0];
-        });
-
-        // And finally load running animation
-        loader.load('assets/models/Animation_Running_withSkin.glb', (gltf) => {
-            playerGroup.userData.animations.running = gltf.animations[0];
-        });
+        }
     });
+    
+    playerGroup.userData.model = model;
+    playerGroup.userData.mixer = new THREE.AnimationMixer(model);
+    
+    playerGroup.userData.animations.idle = idleGltf.animations[0];
+    playerGroup.userData.animations.walking = walkingGltf.animations[0];
+    playerGroup.userData.animations.running = runningGltf.animations[0];
+    
+    playerGroup.add(model);
+    
+    // Start with idle animation
+    const idleAction = playerGroup.userData.mixer.clipAction(playerGroup.userData.animations.idle);
+    idleAction.timeScale = 1.0;
+    idleAction.play();
+    playerGroup.userData.currentAnimation = 'idle';
     
     return playerGroup;
 }

@@ -223,7 +223,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('p3p126Tg.jpg');
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('/assets/textures/p3p126Tg.jpg');
   background-size: cover;
   background-position: center;
   z-index: 2000;
@@ -284,7 +284,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)), url('p3p126Tg.jpg');
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)), url('/assets/textures/p3p126Tg.jpg');
   background-size: cover;
   background-position: center;
   display: flex;
@@ -442,7 +442,25 @@ body {
 .support-button img {
   width: 24px;
   height: 24px;
-  filter: invert(1);
+  filter: brightness(0) invert(1);
+}
+
+.icon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-color: white;
+  vertical-align: middle; /* Align icon with text */
+}
+
+.cashapp-icon {
+  -webkit-mask: url(https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@9/icons/cashapp.svg) no-repeat center;
+  mask: url(https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@9/icons/cashapp.svg) no-repeat center;
+}
+
+.venmo-icon {
+  -webkit-mask: url(https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@9/icons/venmo.svg) no-repeat center;
+  mask: url(https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@9/icons/venmo.svg) no-repeat center;
 }
 
 .cashapp {
