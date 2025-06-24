@@ -160,19 +160,23 @@ export function createTrees(scene) {
   const loader = new GLTFLoader();
   loader.load('assets/models/pine_tree.glb', (gltf) => {
     const treeModel = gltf.scene;
-    
-    // Make sure the model casts and receives shadows
+
+    // Ensure the model casts and receives shadows
     treeModel.traverse((child) => {
       if (child.isMesh) {
         child.castShadow = true;
         child.receiveShadow = true;
       }
     });
+
+    // Calculate vertical offset so tree bases sit on the ground
+    const bbox = new THREE.Box3().setFromObject(treeModel);
+    const baseOffset = -bbox.min.y;
     
     // Create trees at different positions - Increased number of trees and spread
     for (let i = 0; i < 400; i++) { // Increased from 100 to 400 trees
       // Clone the loaded model for each tree
-      const tree = treeModel.clone();
+      const tree = treeModel.clone(true);
       
       // Position the tree - use different distribution patterns based on the index
       let angle, distance;
@@ -193,12 +197,14 @@ export function createTrees(scene) {
       
       tree.position.x = Math.cos(angle) * distance;
       tree.position.z = Math.sin(angle) * distance;
-      tree.position.y = getGroundHeight(tree.position.x, tree.position.z, scene);
-      
-      // Add some random rotation and scale variation
+
+      // Random rotation and scale
       tree.rotation.y = rng.random() * Math.PI * 2;
       const treeScale = 0.0144 + rng.random() * 0.009;
       tree.scale.set(treeScale, treeScale, treeScale);
+
+      // Position tree on the ground considering scale
+      tree.position.y = getGroundHeight(tree.position.x, tree.position.z, scene) + baseOffset * treeScale;
       
       // Add custom property for collision detection
       tree.userData.isTree = true;
