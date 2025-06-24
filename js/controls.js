@@ -12,7 +12,7 @@ const MOBILE_SPEED_MULTIPLIER = 1.2; // Slightly increased mobile speed
 export class PlayerControls {
   constructor(scene, room, options = {}) {
     // Add jump sound initialization
-    this.jumpSound = new Audio('jumpsfx.wav');
+    this.jumpSound = new Audio('assets/audio/jumpsfx.wav');
     this.jumpSound.volume = 0.3; // Set to 30% volume
     
     this.scene = scene;

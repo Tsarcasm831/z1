@@ -24,7 +24,7 @@ async function main() {
   const enterButton = document.getElementById('enter-button');
   
   // Create audio element for menu sound
-  const menuSound = new Audio('z1_menu_sfx.mp3');
+  const menuSound = new Audio('assets/audio/z1_menu_sfx.mp3');
   menuSound.volume = 0.5; // Set volume to 50%
   
   const loadingMessages = [
@@ -156,7 +156,7 @@ async function main() {
     
     // Load ground texture
     const textureLoader = new THREE.TextureLoader();
-    const groundTexture = textureLoader.load('d75c1v3-b844c293-57db-4eac-8504-7c4c06a4e329.png');
+    const groundTexture = textureLoader.load('assets/textures/d75c1v3-b844c293-57db-4eac-8504-7c4c06a4e329.png');
     
     // Configure texture repeat to avoid stretching
     groundTexture.wrapS = THREE.RepeatWrapping;
