@@ -5,5 +5,10 @@
   { "url": "https://file.garden/Zy7B0LkdIVpGyzA1/Z1/fox.glb", "path": "assets/models/fox.glb" },
   { "url": "https://file.garden/Zy7B0LkdIVpGyzA1/Z1/player/Animation_Running_withSkin.glb", "path": "assets/models/player/Animation_Running_withSkin.glb" },
   { "url": "https://file.garden/Zy7B0LkdIVpGyzA1/Z1/player/Animation_Idle_withSkin.glb", "path": "assets/models/player/Animation_Idle_withSkin.glb" },
-  { "url": "https://file.garden/Zy7B0LkdIVpGyzA1/Z1/player/Animation_Walking_withSkin.glb", "path": "assets/models/player/Animation_Walking_withSkin.glb" }
+  { "url": "https://file.garden/Zy7B0LkdIVpGyzA1/Z1/player/Animation_Walking_withSkin.glb", "path": "assets/models/player/Animation_Walking_withSkin.glb" },
+  { "url": "https://file.garden/Zy7B0LkdIVpGyzA1/Z1/pine_tree.glb", "path": "assets/models/pine_tree.glb" },
+  { "url": "https://file.garden/Zy7B0LkdIVpGyzA1/Z1/workshop.glb", "path": "assets/models/workshop.glb" },
+  { "url": "https://file.garden/Zy7B0LkdIVpGyzA1/Z1/truck.glb", "path": "assets/models/truck.glb" },
+  { "url": "https://file.garden/Zy7B0LkdIVpGyzA1/Z1/radcow.glb", "path": "assets/models/radcow.glb" },
+  { "url": "https://file.garden/Zy7B0LkdIVpGyzA1/Z1/plant_monster_walking_animation.glb", "path": "assets/models/plant_monster_walking_animation.glb" }
 ]
