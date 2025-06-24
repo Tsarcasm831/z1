@@ -31,7 +31,7 @@ export async function spawnFoxes(scene, count) {
 
     const x = (Math.random() * 40) - 20;
     const z = (Math.random() * 40) - 20;
-    const y = getGroundHeight(x, z, scene);
+    const y = getGroundHeight(x, z);
     fox.position.set(x, y, z);
 
     fox.userData.mixer = mixer;

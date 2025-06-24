@@ -415,7 +415,7 @@ async function main() {
       for (const fox of foxes) {
         fox.userData.mixer.update(0.016);
         fox.position.addScaledVector(fox.userData.direction, fox.userData.speed);
-        fox.position.y = getGroundHeight(fox.position.x, fox.position.z, scene);
+        fox.position.y = getGroundHeight(fox.position.x, fox.position.z);
         fox.rotation.y = Math.atan2(fox.userData.direction.x, fox.userData.direction.z);
         if (Math.random() < 0.01) {
           fox.userData.direction.x += (Math.random() - 0.5) * 0.5;

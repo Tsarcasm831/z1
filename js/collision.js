@@ -64,7 +64,7 @@ export function resolvePlayerMovement(pos, movement, velocity, scene, options = 
     checkBlock(block);
   });
 
-  const groundHeight = getGroundHeight(newX, newZ, scene);
+  const groundHeight = getGroundHeight(newX, newZ);
   if (newY <= groundHeight && !standingOnBlock) {
     newY = groundHeight;
     velocity.y = 0;
