@@ -41,10 +41,14 @@
 - 062425-2017 Add roaming fox NPCs with walking animation.
 ### 🐛 Fixed
 - 062425-2123 Fix incorrect GLB path for roaming fox model.
+### 🛠 Changed
+- 062425-2155 Use noise-based ground height lookup to reduce raycasting.
 
 ## worldGeneration.js
 ### 🔥 Removed
 - 062425-2021 Delete unused MathRandom class.
+### 🛠 Changed
+- 062425-2155 Replace raycaster height queries with direct noise lookup.
 
 ## README.md
 ### ✨ Added

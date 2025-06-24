@@ -75,26 +75,13 @@ export class TerrainGenerator {
 
 export let terrainGenerator;
 
-// Get terrain height using a raycaster for better accuracy.
-// Moved from collision.js to be reused here.
-export function getGroundHeight(x, z, scene) {
-  const terrain = scene.children.find(c => c.userData.isTerrain);
-
-  if (terrain) {
-    const raycaster = new THREE.Raycaster();
-    // Start ray from high above. The terrain height is between -25 and 25 approx, so 100 is safe.
-    const rayOrigin = new THREE.Vector3(x, 100, z);
-    const rayDirection = new THREE.Vector3(0, -1, 0);
-    raycaster.set(rayOrigin, rayDirection);
-
-    const intersects = raycaster.intersectObject(terrain);
-
-    if (intersects.length > 0) {
-      return intersects[0].point.y;
-    }
-  }
-
-  // Fallback to procedural generation if terrain mesh not found or no intersection
+// Get terrain height quickly using the same noise generator that built the
+// terrain mesh. This avoids per-frame raycasting which became a bottleneck when
+// multiple animated foxes were added.
+export function getGroundHeight(x, z) {
+  // Using the terrainGenerator directly avoids expensive raycaster calls each
+  // frame. The generator produced the terrain mesh, so its height values match
+  // the rendered ground.
   return terrainGenerator ? terrainGenerator.getHeight(x, z) : 0;
 }
 
