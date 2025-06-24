@@ -1,8 +1,9 @@
 import * as THREE from "three";
 import { PlayerControls } from "./controls.js";
 import { createPlayerModel, changeAnimation } from "./player.js";
-import { createBarriers, createTerrain } from "./worldGeneration.js";
+import { createBarriers, createTerrain, getGroundHeight } from "./worldGeneration.js";
 import { createSkybox } from "./skybox.js";
+import { spawnFoxes } from "./fox.js";
 
 // Simple seeded random number generator
 class MathRandom {
@@ -111,6 +112,9 @@ async function main() {
     // Create terrain and natural features
     createBarriers(scene);
     createTerrain(scene);
+
+    // Spawn wandering foxes
+    const foxes = await spawnFoxes(scene, 12);
     
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -417,6 +421,19 @@ async function main() {
           } else {
             playerLabels[clientId].style.display = 'none';
           }
+        }
+      }
+
+      // Move and animate foxes
+      for (const fox of foxes) {
+        fox.userData.mixer.update(0.016);
+        fox.position.addScaledVector(fox.userData.direction, fox.userData.speed);
+        fox.position.y = getGroundHeight(fox.position.x, fox.position.z, scene);
+        fox.rotation.y = Math.atan2(fox.userData.direction.x, fox.userData.direction.z);
+        if (Math.random() < 0.01) {
+          fox.userData.direction.x += (Math.random() - 0.5) * 0.5;
+          fox.userData.direction.z += (Math.random() - 0.5) * 0.5;
+          fox.userData.direction.normalize();
         }
       }
       
