@@ -3,6 +3,7 @@ import { PointerLockControls } from "three/addons/controls/PointerLockControls.j
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { changeAnimation } from "./player.js";
 import { terrainGenerator } from "./worldGeneration.js";
+import { resolvePlayerMovement } from "./collision.js";
 
 // Movement constants
 const SPEED = 0.08;
@@ -309,72 +310,19 @@ export class PlayerControls {
     }
     
     this.velocity.y -= GRAVITY;
-    
-    let newX = x + movement.x;
-    let newY = y + this.velocity.y;
-    let newZ = z + movement.z;
-    
-    const blockMeshes = this.scene.children.filter(child => 
-      child.userData.isBlock || child.userData.isBarrier || 
-      (child.type === "Group" && child.userData.isTree));
-    
-    const playerRadius = 0.3;
-    const playerHeight = 1.8;
-    
-    let standingOnBlock = false;
-    blockMeshes.forEach(block => {
-      if (block.type === "Group" && block.userData.isTree) {
-        checkCollision.call(this, block, 1.0, 2.0, 1.0); 
-      } else {
-        checkCollision.call(this, block);
-      }
-    });
-    
-    function checkCollision(block, overrideWidth, overrideHeight, overrideDepth) {
-      const blockSize = new THREE.Vector3();
-      if (block.geometry) {
-        const boundingBox = new THREE.Box3().setFromObject(block);
-        boundingBox.getSize(blockSize);
-      } else {
-        blockSize.set(1, 1, 1);
-      }
-      
-      const blockWidth = overrideWidth || blockSize.x;
-      const blockHeight = overrideHeight || blockSize.y;
-      const blockDepth = overrideDepth || blockSize.z;
-      
-      if (
-        this.velocity.y <= 0 &&
-        Math.abs(newX - block.position.x) < (blockWidth / 2 + playerRadius) &&
-        Math.abs(newZ - block.position.z) < (blockDepth / 2 + playerRadius) &&
-        Math.abs(y - (block.position.y + blockHeight / 2)) < 0.2 &&
-        y >= block.position.y
-      ) {
-        standingOnBlock = true;
-        newY = block.position.y + blockHeight / 2 + 0.01;
-        this.velocity.y = 0;
-        this.canJump = true;
-      } else if (
-        Math.abs(newX - block.position.x) < (blockWidth / 2 + playerRadius) &&
-        Math.abs(newZ - block.position.z) < (blockDepth / 2 + playerRadius) &&
-        newY < block.position.y + blockHeight / 2 &&
-        newY + playerHeight > block.position.y - blockHeight / 2
-      ) {
-        if (Math.abs(movement.x) > 0) {
-          newX = x;
-        }
-        if (Math.abs(movement.z) > 0) {
-          newZ = z;
-        }
-      }
-    }
-    
-    const groundHeight = terrainGenerator ? terrainGenerator.getHeight(newX, newZ) : 0;
-    if (newY <= groundHeight && !standingOnBlock) {
-      newY = groundHeight;
-      this.velocity.y = 0;
-      this.canJump = true;
-    }
+
+    const result = resolvePlayerMovement(
+      new THREE.Vector3(x, y, z),
+      movement,
+      this.velocity.clone(),
+      this.scene
+    );
+
+    let newX = result.position.x;
+    let newY = result.position.y;
+    let newZ = result.position.z;
+    this.velocity.copy(result.velocity);
+    this.canJump = result.onGround;
     
     const isMovingNow = movement.length() > 0;
     this.isMoving = isMovingNow;
