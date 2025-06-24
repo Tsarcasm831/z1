@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { PlayerControls } from "./controls.js";
 import { createPlayerModel, changeAnimation } from "./player.js";
-import { createBarriers, createTrees, createTerrain } from "./worldGeneration.js";
+import { createBarriers, createTerrain } from "./worldGeneration.js";
 import { createSkybox } from "./skybox.js";
 
 // Simple seeded random number generator
@@ -30,7 +30,6 @@ async function main() {
   const loadingMessages = [
     "Feeding Zombies...",
     "Hiding Supplies...",
-    "Growing Trees...",
     "Darkening Skies...",
     "Setting Traps...",
     "Scattering Resources...",
@@ -112,7 +111,6 @@ async function main() {
     // Create terrain and natural features
     createBarriers(scene);
     createTerrain(scene);
-    createTrees(scene);
     
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
