@@ -19,11 +19,14 @@
 ## changelogModal.js
 ### ✨ Added
 - 062425-2013 Display CHANGELOG in a modal on page load.
+### 🛠 Changed
+- 062425-2050 Open changelog via button instead of automatically.
 
 ## index.html
 ### ✨ Added
 - 062425-2013 Include changelog modal markup and script.
 - 062425-2038 ui/intro-screen: Pulsing LT logo next to title.
+- 062425-2050 ui/intro-screen: Changelog button below Enter World.
 
 ## styles.css
 ### ✨ Added
@@ -31,6 +34,7 @@
 - 062425-2038 ui/intro-screen: Animations for LT logo and layout tweaks.
 ### 🛠 Changed
 - 062425-2043 ui/intro-screen: Enlarged LT logo to 3x size.
+- 062425-2050 ui/intro-screen: Styling for changelog button.
 
 ## fox.js
 ### ✨ Added
