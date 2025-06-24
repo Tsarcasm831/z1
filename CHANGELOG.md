@@ -7,6 +7,7 @@
 ## app.js
 ### 🔥 Removed
 - 062425-2001 Omit createTrees import and usage; drop related loading message.
+- 062425-2021 Remove unused createSkybox import and MathRandom class.
 
 ### ✨ Added
 - 062425-2017 Spawn fox NPCs and update animation loop for movement.
@@ -30,4 +31,8 @@
 ## fox.js
 ### ✨ Added
 - 062425-2017 Add roaming fox NPCs with walking animation.
+
+## worldGeneration.js
+### 🔥 Removed
+- 062425-2021 Delete unused MathRandom class.
 
