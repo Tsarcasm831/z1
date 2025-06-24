@@ -2,10 +2,10 @@ import * as THREE from 'three';
 import { terrainGenerator, getGroundHeight } from './worldGeneration.js';
 
 // Return array of meshes that should be used for collision checks
+// Trees were previously included but no longer participate in collisions
 export function getCollidableMeshes(scene) {
-  return scene.children.filter(child =>
-    child.userData.isBlock || child.userData.isBarrier ||
-    (child.type === 'Group' && child.userData.isTree)
+  return scene.children.filter(
+    child => (child.userData.isBlock || child.userData.isBarrier) && !child.userData.isTree
   );
 }
 
@@ -61,11 +61,7 @@ export function resolvePlayerMovement(pos, movement, velocity, scene, options = 
   }
 
   blocks.forEach(block => {
-    if (block.type === 'Group' && block.userData.isTree) {
-      checkBlock(block, 1.0, 2.0, 1.0);
-    } else {
-      checkBlock(block);
-    }
+    checkBlock(block);
   });
 
   const groundHeight = getGroundHeight(newX, newZ, scene);
