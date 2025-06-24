@@ -8,6 +8,9 @@
 ### 🔥 Removed
 - 062425-2001 Omit createTrees import and usage; drop related loading message.
 
+### ✨ Added
+- 062425-2017 Spawn fox NPCs and update animation loop for movement.
+
 ## assets
 ### 🔥 Removed
 - 062425-2005 Drop unused pine_tree.glb model.
@@ -23,3 +26,8 @@
 ## styles.css
 ### ✨ Added
 - 062425-2013 Style rules for changelog modal overlay.
+
+## fox.js
+### ✨ Added
+- 062425-2017 Add roaming fox NPCs with walking animation.
+
