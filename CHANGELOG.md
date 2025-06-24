@@ -23,10 +23,12 @@
 ## index.html
 ### ✨ Added
 - 062425-2013 Include changelog modal markup and script.
+- 062425-2038 ui/intro-screen: Pulsing LT logo next to title.
 
 ## styles.css
 ### ✨ Added
 - 062425-2013 Style rules for changelog modal overlay.
+- 062425-2038 ui/intro-screen: Animations for LT logo and layout tweaks.
 
 ## fox.js
 ### ✨ Added
