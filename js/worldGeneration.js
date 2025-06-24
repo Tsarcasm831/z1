@@ -75,6 +75,29 @@ export class TerrainGenerator {
 
 export let terrainGenerator;
 
+// Get terrain height using a raycaster for better accuracy.
+// Moved from collision.js to be reused here.
+export function getGroundHeight(x, z, scene) {
+  const terrain = scene.children.find(c => c.userData.isTerrain);
+
+  if (terrain) {
+    const raycaster = new THREE.Raycaster();
+    // Start ray from high above. The terrain height is between -25 and 25 approx, so 100 is safe.
+    const rayOrigin = new THREE.Vector3(x, 100, z);
+    const rayDirection = new THREE.Vector3(0, -1, 0);
+    raycaster.set(rayOrigin, rayDirection);
+
+    const intersects = raycaster.intersectObject(terrain);
+
+    if (intersects.length > 0) {
+      return intersects[0].point.y;
+    }
+  }
+
+  // Fallback to procedural generation if terrain mesh not found or no intersection
+  return terrainGenerator ? terrainGenerator.getHeight(x, z) : 0;
+}
+
 export function createTerrain(scene) {
   terrainGenerator = new TerrainGenerator(12345);
 
@@ -106,6 +129,7 @@ export function createTerrain(scene) {
   const ground = new THREE.Mesh(geometry, material);
   ground.rotation.x = -Math.PI / 2;
   ground.receiveShadow = true;
+  ground.userData.isTerrain = true;
   scene.add(ground);
 
   return ground;
@@ -169,9 +193,7 @@ export function createTrees(scene) {
       
       tree.position.x = Math.cos(angle) * distance;
       tree.position.z = Math.sin(angle) * distance;
-      if (terrainGenerator) {
-        tree.position.y = terrainGenerator.getHeight(tree.position.x, tree.position.z);
-      }
+      tree.position.y = getGroundHeight(tree.position.x, tree.position.z, scene);
       
       // Add some random rotation and scale variation
       tree.rotation.y = rng.random() * Math.PI * 2;

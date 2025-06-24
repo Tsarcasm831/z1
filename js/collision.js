@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { terrainGenerator } from './worldGeneration.js';
+import { terrainGenerator, getGroundHeight } from './worldGeneration.js';
 
 // Return array of meshes that should be used for collision checks
 export function getCollidableMeshes(scene) {
@@ -7,23 +7,6 @@ export function getCollidableMeshes(scene) {
     child.userData.isBlock || child.userData.isBarrier ||
     (child.type === 'Group' && child.userData.isTree)
   );
-}
-
-// Sample terrain height around the player to better handle steep slopes
-function getGroundHeight(x, z) {
-  if (!terrainGenerator) return 0;
-  const offsets = [
-    [0, 0],
-    [0.3, 0],
-    [-0.3, 0],
-    [0, 0.3],
-    [0, -0.3],
-  ];
-  let total = 0;
-  for (const [dx, dz] of offsets) {
-    total += terrainGenerator.getHeight(x + dx, z + dz);
-  }
-  return total / offsets.length;
 }
 
 // Resolve collisions and return updated position and velocity
@@ -85,7 +68,7 @@ export function resolvePlayerMovement(pos, movement, velocity, scene, options = 
     }
   });
 
-  const groundHeight = getGroundHeight(newX, newZ);
+  const groundHeight = getGroundHeight(newX, newZ, scene);
   if (newY <= groundHeight && !standingOnBlock) {
     newY = groundHeight;
     velocity.y = 0;
