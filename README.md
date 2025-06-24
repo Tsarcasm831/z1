@@ -15,13 +15,17 @@ Open `http://localhost:8000` in your browser and the intro screen should appear.
 
 ## Extra Assets
 
-Additional models can be downloaded with the provided Node script. These assets are listed in `extra-assets.json` and will be placed inside the `assets/models/` directory.
+Additional models, including the roaming fox NPC, can be downloaded with the provided Node script. These assets are listed in `extra-assets.json` and will be placed inside the `assets/models/` directory.
 
 ```bash
 node model_downloader.js
 ```
 
 The script uses only Node's built‑in modules and will create folders as needed.
+
+## Changelog Modal and Roaming Foxes
+
+When the page loads, a modal window displays recent entries from `CHANGELOG.md`. The game also features roaming fox NPCs that wander the terrain. Make sure you run the asset download script above so the fox models appear.
 
 ## Project Structure
 

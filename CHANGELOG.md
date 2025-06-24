@@ -36,3 +36,7 @@
 ### 🔥 Removed
 - 062425-2021 Delete unused MathRandom class.
 
+## README.md
+### ✨ Added
+- 062425-2025 Document changelog modal and roaming fox models with download instructions.
+
