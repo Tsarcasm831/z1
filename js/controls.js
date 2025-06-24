@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { PointerLockControls } from "three/addons/controls/PointerLockControls.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { changeAnimation } from "./player.js";
+import { terrainGenerator } from "./worldGeneration.js";
 
 // Movement constants
 const SPEED = 0.08;
@@ -45,8 +46,9 @@ export class PlayerControls {
     // Initial player position
     const initialPos = options.initialPosition || {};
     this.playerX = initialPos.x || (Math.random() * 10) - 5;
-    this.playerY = initialPos.y || 0.5;
     this.playerZ = initialPos.z || (Math.random() * 10) - 5;
+    const baseHeight = terrainGenerator ? terrainGenerator.getHeight(this.playerX, this.playerZ) : 0;
+    this.playerY = initialPos.y !== undefined ? initialPos.y : baseHeight + 0.5;
     
     // Set initial player model position if it exists
     if (this.playerModel) {
@@ -367,8 +369,9 @@ export class PlayerControls {
       }
     }
     
-    if (newY <= 0 && !standingOnBlock) {
-      newY = 0;
+    const groundHeight = terrainGenerator ? terrainGenerator.getHeight(newX, newZ) : 0;
+    if (newY <= groundHeight && !standingOnBlock) {
+      newY = groundHeight;
       this.velocity.y = 0;
       this.canJump = true;
     }
