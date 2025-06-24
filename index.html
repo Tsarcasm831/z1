@@ -1,0 +1,85 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Z1 Survive</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/nipplejs@0.10.1/dist/nipplejs.min.js"></script>
+</head>
+<body>
+  <div id="intro-screen">
+    <h1><span>Z</span>1 Survive</h1>
+    <button id="enter-button">ENTER WORLD</button>
+    
+    <!-- Add support section -->
+    <div class="support-section">
+      <p>Support This Project</p>
+      <div class="support-buttons">
+        <a href="https://cash.app/$Madlabz" target="_blank" class="support-button cashapp">
+          <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@develop/icons/cashapp.svg" alt="Cash App">
+          $Madlabz
+        </a>
+        <a href="https://venmo.com/Madlabz" target="_blank" class="support-button venmo">
+          <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@develop/icons/venmo.svg" alt="Venmo">
+          @Madlabz
+        </a>
+      </div>
+    </div>
+  </div>
+  <div id="loading-screen" style="display: none;">
+    <div class="loading-content">
+      <h2 id="loading-message">Loading World...</h2>
+      <div class="loading-bar">
+        <div class="loading-progress"></div>
+      </div>
+    </div>
+  </div>
+  <div id="game-container" style="display: none;">
+    <div class="crosshair"></div>
+  </div>
+
+  <!-- Add settings menu -->
+  <div id="settings-menu">
+    <button class="settings-close">&times;</button>
+    <h2>Settings</h2>
+    <div class="settings-row">
+      <span class="settings-label">Sound Effects Volume</span>
+      <div class="settings-control">
+        <input type="range" min="0" max="100" value="50" class="volume-slider" id="sfx-volume">
+        <span id="sfx-volume-value">50%</span>
+      </div>
+    </div>
+    <div class="settings-row">
+      <span class="settings-label">Show Player Names</span>
+      <div class="settings-control">
+        <input type="checkbox" id="show-names" checked>
+      </div>
+    </div>
+    <div class="settings-row">
+      <span class="settings-label">Show Chat</span>
+      <div class="settings-control">
+        <input type="checkbox" id="show-chat" checked>
+      </div>
+    </div>
+    <div class="settings-row">
+      <span class="settings-label">Show Grid</span>
+      <div class="settings-control">
+        <input type="checkbox" id="show-grid">
+      </div>
+    </div>
+    <div class="settings-row">
+      <button class="settings-button" id="resume-game">Resume Game</button>
+    </div>
+  </div>
+
+  <script src="app.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,476 @@
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  user-select: none;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+  touch-action: manipulation;
+  -webkit-touch-callout: none; /* iOS Safari */
+}
+
+#game-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.instructions {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  border-radius: 8px;
+  font-size: 18px;
+  color: #fff;
+  z-index: 100;
+  max-width: 400px;
+  text-align: center;
+}
+
+.crosshair {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 1000;
+  display: none; /* Hide crosshair for third-person view */
+}
+
+.crosshair::before,
+.crosshair::after {
+  content: "";
+  position: absolute;
+  background-color: white;
+}
+
+.crosshair::before {
+  top: 9px;
+  left: 0;
+  width: 20px;
+  height: 2px;
+}
+
+.crosshair::after {
+  top: 0;
+  left: 9px;
+  width: 2px;
+  height: 20px;
+}
+
+#joystick-container {
+  position: fixed;
+  bottom: 50px;
+  left: 20px;
+  width: 150px;  
+  height: 150px; 
+  z-index: 1000;
+  display: none; 
+  touch-action: none;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+}
+
+#jump-button {
+  position: fixed;
+  bottom: 50px;
+  right: 20px;
+  width: 80px;
+  height: 80px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  display: none; 
+  z-index: 1000;
+  touch-action: none;
+  text-align: center;
+  line-height: 80px;
+  font-weight: bold;
+  color: #333;
+  user-select: none;
+}
+
+#camera-controls {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 12px;
+  z-index: 100;
+}
+
+.player-name {
+  position: absolute;
+  font-size: 14px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 2px 6px;
+  border-radius: 8px;
+  pointer-events: none;
+  white-space: nowrap;
+  transform: translate(-50%, -100%);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Remove old chat styles */
+.chat-message {
+  display: none;
+}
+
+#chat-input-container {
+  display: none;
+}
+
+#chat-input {
+  display: none;
+}
+
+#chat-button {
+  display: none;
+}
+
+#close-chat {
+  display: none;
+}
+
+/* Add new console chat styles */
+#chat-console {
+  position: fixed;
+  left: 10px;
+  bottom: 10px;
+  width: 300px;
+  height: auto; /* Remove fixed height */
+  background-color: transparent; /* Remove dark background */
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  z-index: 2000;
+  font-family: monospace;
+}
+
+#chat-messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  color: #fff;
+  font-size: 14px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9); /* Add text shadow for readability */
+}
+
+#chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+#chat-messages::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+#chat-messages::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+#console-input {
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 5px;
+  font-family: monospace;
+  font-size: 14px;
+  width: 100%;
+  outline: none;
+  border-radius: 4px;
+}
+
+.chat-entry {
+  margin: 2px 0;
+  word-wrap: break-word;
+}
+
+.chat-timestamp {
+  color: #888;
+}
+
+.chat-username {
+  color: #4CAF50;
+}
+
+.chat-message-text {
+  color: #fff;
+}
+
+/* Add new intro screen styles */
+#intro-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('p3p126Tg.jpg');
+  background-size: cover;
+  background-position: center;
+  z-index: 2000;
+}
+
+#intro-screen h1 {
+  font-size: 72px;
+  color: #fff;
+  text-shadow: 
+    -2px -2px 0 #000,  
+     2px -2px 0 #000,
+    -2px  2px 0 #000,
+     2px  2px 0 #000,
+     0 0 20px rgba(255, 255, 255, 0.5);
+  margin-bottom: 40px;
+  font-family: 'Arial Black', sans-serif;
+  letter-spacing: 4px;
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+#intro-screen h1 span {
+  color: #ff0000;
+}
+
+#enter-button {
+  padding: 20px 40px;
+  font-size: 24px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 2px solid #fff;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  letter-spacing: 2px;
+}
+
+#enter-button:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  }
+  to {
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.8),
+                 0 0 40px rgba(255, 255, 255, 0.3);
+  }
+}
+
+/* Add loading screen styles */
+#loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)), url('p3p126Tg.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1500;
+}
+
+.loading-content {
+  text-align: center;
+  color: #fff;
+}
+
+.loading-content h2 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  font-family: 'Arial', sans-serif;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.loading-bar {
+  width: 300px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.loading-progress {
+  width: 0%;
+  height: 100%;
+  background: #ff3333;
+  transition: width 0.5s ease;
+}
+
+/* Add settings menu styles */
+#settings-menu {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.85);
+  border: 2px solid #333;
+  padding: 20px;
+  border-radius: 8px;
+  color: white;
+  min-width: 300px;
+  z-index: 2500;
+}
+
+#settings-menu h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #ff3333;
+  font-size: 24px;
+}
+
+.settings-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+  padding: 5px 0;
+  border-bottom: 1px solid #333;
+}
+
+.settings-row:last-child {
+  border-bottom: none;
+}
+
+.settings-label {
+  font-size: 16px;
+}
+
+.settings-control {
+  display: flex;
+  align-items: center;
+}
+
+.volume-slider {
+  width: 100px;
+  margin-right: 10px;
+}
+
+.settings-button {
+  background: #ff3333;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.settings-button:hover {
+  background: #ff4444;
+}
+
+.settings-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.settings-close:hover {
+  color: #ff3333;
+}
+
+/* Add support section styles */
+.support-section {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #fff;
+}
+
+.support-section p {
+  font-size: 18px;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.support-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.support-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.support-button:hover {
+  transform: translateY(-2px);
+}
+
+.support-button img {
+  width: 24px;
+  height: 24px;
+  filter: invert(1);
+}
+
+.cashapp {
+  background-color: #00D632;
+}
+
+.cashapp:hover {
+  background-color: #00b82b;
+}
+
+.venmo {
+  background-color: #008CFF;
+}
+
+.venmo:hover {
+  background-color: #0074d4;
+}
+
+@media (max-width: 768px) {
+  #joystick-container {
+    display: block;
+  }
+  
+  #jump-button {
+    display: block;
+  }
+  
+  .instructions {
+    display: none !important; 
+  }
+}
